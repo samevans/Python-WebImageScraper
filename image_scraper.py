@@ -1,16 +1,28 @@
 from bs4 import BeautifulSoup
-from urllib2 import urlopen
+import urllib2
 import urllib
+from urllib import FancyURLopener
 
 # use this image scraper from the location that 
 #you want to save scraped images to
 
+class MyOpener(FancyURLopener, object):
+    version = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'
+
+
 def make_soup(url):
-	html = urlopen(url).read()
-	return BeautifulSoup(html)
+	try:
+		myopener = MyOpener()
+		html = myopener.retrieve(url, 'useragent.html')
+	except  e:
+		print e
+		return
+	print(html)
+	return BeautifulSoup(html, "html5lib")
 
 def get_images(url):
 	soup = make_soup(url)
+
 	#this makes a list of bs4 element tags
 	images = [img for img in soup.findAll('img')]
 	print (str(len(images)) + "images found.")
@@ -19,7 +31,8 @@ def get_images(url):
 	image_links = [each.get('src') for each in images]
 	for each in image_links:
 		filename=each.split('/')[-1]
-		urllib.urlretrieve(each, filename)
+		print(filename)
+        print(each)#urllib.urlretrieve(each, filename)
 	return image_links
 
 #a standard call looks like this
