@@ -5,8 +5,9 @@ A Python powered app that scrapes images from requested URLs and dumps them in s
 
 A standard call looks like this:
 	get_images('http://www.wookmark.com')
-	
-###### Dependencies
+
+## Dependencies
+###### Beautiful Soup
 ```
 sudo pip install BeautifulSoup
 ```
